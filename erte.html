@@ -1,11 +1,4 @@
-<!-- ===================== erte.html ===================== -->
-liste.innerHTML='';
-
-
-onValue(ref(db,'katilanlar'), snap => {
-snap.forEach(d=>{
-const k=d.val();
-if((k.ad+' '+k.soyad).toLowerCase().includes(q)){
+<!DOCTYPE html>
 liste.innerHTML += `
 <div class="profile-card">
 <h3>${k.ad} ${k.soyad}</h3>
