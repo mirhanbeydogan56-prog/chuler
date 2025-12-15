@@ -1,113 +1,14 @@
-<!-- ===================== index.html ===================== -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>🎄 Teilnahmeformular</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  <meta charset="UTF-8" />
+  <title>🎄 Weihnachts-Teilnahme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
-    authDomain: "ertee-fc073.firebaseapp.com",
-    databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
-    projectId: "ertee-fc073",
-    storageBucket: "ertee-fc073.firebasestorage.app",
-    messagingSenderId: "738703331926",
-    appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  const sifre = localStorage.getItem('sifre');
-  const meineKarte = document.getElementById('meineKarte');
-  const liste = document.getElementById('liste');
-
-  if(!sifre){
-    meineKarte.innerHTML = '<p style="opacity:.6">Kein Zugriff</p>';
-    throw new Error('Kein Code');
-  }
-
-  let erlaubt = false;
-
-  const snap = await get(ref(db,'katilanlar'));
-  snap.forEach(d=>{
-    const k = d.val();
-    if(k.sifre === sifre){
-      erlaubt = true;
-      meineKarte.innerHTML = `
-        <div class="profile-card glow">
-          <h2>${k.ad} ${k.soyad}</h2>
-          <p>Klasse: ${k.sinif}</p>
-          <p>Freund: ${k.arkadas}</p>
-          <p>Depression: ${k.depresyon}%</p>
-        </div>`;
-    }
-  });
-
-  window.suche = async function(){
-    if(!erlaubt) return;
-    const q = suchfeld.value.toLowerCase();
-    liste.innerHTML = '';
-
-    const snap2 = await get(ref(db,'katilanlar'));
-    snap2.forEach(d=>{
-      const k = d.val();
-      if((k.ad + ' ' + k.soyad).toLowerCase().includes(q)){
-        liste.innerHTML += `
-          <div class="profile-card">
-            <h3>${k.ad} ${k.soyad}</h3>
-            <span>${k.sinif}</span>
-          </div>`;
-      }
-    });
-  }
-</script>
-  <style>
-    body{background:#0b1d3a;color:#fff;font-family:Segoe UI;margin:0}
-    .card{max-width:420px;margin:60px auto;padding:25px;background:rgba(255,255,255,.12);border-radius:25px}
-    input,button{width:100%;padding:12px;border-radius:30px;border:none;margin-top:10px}
-    button{background:#e63946;color:#fff;font-weight:bold}
-    .row{display:flex;gap:10px}
-  </style>
-</head>
-<body>
-
-<div class="card" id="form">
-  <h2>🎄 Teilnahme</h2>
-  <div class="row"><input id="ad" placeholder="Vorname"><input id="soyad" placeholder="Nachname"></div>
-  <input id="sinif" placeholder="Klasse">
-  <input id="arkadas" placeholder="Bester Freund">
-  <input id="depresyon" type="number" placeholder="Depression %">
-  <button onclick="absenden()">Bestätigen</button>
-</div>
-
-<div class="card" id="fertig" style="display:none">
-  <h2>✅ Bestätigt</h2>
-  <p id="code"></p>
-  <a href="erte.html" style="color:#fff">Zu Erte</a>
-</div>
-
-</body>
-</html>
-
-<!-- ===================== erte.html ===================== -->
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>Erte | Profile</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Icons & Animation -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
@@ -122,119 +23,171 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    const meineSifre = localStorage.getItem('sifre');
+    // FORM ABSENDEN
+    window.absenden = async function () {
+      if (!vorname.value || !nachname.value) {
+        alert('Bitte Vor- und Nachname eingeben');
+        return;
+      }
 
-    onValue(ref(db,'katilanlar'), snap => {
-      snap.forEach(d=>{
-        const k=d.val();
-        if(k.sifre===meineSifre){
-          document.getElementById('meineKarte').innerHTML = `
-            <div class="profile-card glow">
-              <h2>${k.ad} ${k.soyad}</h2>
-              <p><i class="fa-solid fa-school"></i> Klasse: ${k.sinif}</p>
-              <p><i class="fa-solid fa-user-group"></i> Freund: ${k.arkadas}</p>
-              <p><i class="fa-solid fa-heart-crack"></i> Depression: ${k.depresyon}%</p>
-            </div>`;
-        }
+      await push(ref(db, 'katilanlar'), {
+        ad: vorname.value,
+        soyad: nachname.value,
+        sinif: klasse.value,
+        arkadas: freund.value,
+        depresyon: depresyon.value || 0,
+        zeit: new Date().toISOString()
       });
-    });
 
-    window.suche = function(){
-      const q = suchfeld.value.toLowerCase();
-      const liste = document.getElementById('liste');
-      liste.innerHTML='';
+      form.style.display = 'none';
+      fertig.style.display = 'block';
+    };
 
-      onValue(ref(db,'katilanlar'), snap => {
-        snap.forEach(d=>{
-          const k=d.val();
-          if((k.ad+' '+k.soyad).toLowerCase().includes(q)){
-            liste.innerHTML += `
-              <div class="profile-card">
-                <h3>${k.ad} ${k.soyad}</h3>
-                <span>${k.sinif}</span>
-              </div>`;
-          }
-        });
-      }, { onlyOnce:true });
-    }
+    // ADMIN PANEL
+    window.adminOeffnen = async function () {
+      const pass = prompt('Admin Passwort:');
+      if (pass !== 'mirhan5685') return alert('Falsches Passwort');
+
+      const snap = await get(ref(db, 'katilanlar'));
+      let html = `<h3>Teilnehmer (${snap.size})</h3>`;
+
+      snap.forEach(d => {
+        const k = d.val();
+        html += `
+          <div class="admin-card">
+            <b>${k.ad} ${k.soyad}</b><br>
+            Klasse: ${k.sinif}<br>
+            Freund: ${k.arkadas}<br>
+            Depression: %${k.depresyon}
+          </div>`;
+      });
+
+      adminPanel.innerHTML = html;
+      adminPanel.style.display = 'block';
+    };
   </script>
 
   <style>
-    body{
-      margin:0;
-      font-family:'Segoe UI',sans-serif;
-      background:#121212;
-      color:#fff;
-      min-height:100vh;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #1b3b6f, #0b1d3a);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    h1{text-align:center;margin:30px 0}
+    h1, h2 { text-align: center; }
 
-    .container{
-      max-width:1100px;
-      margin:auto;
-      padding:20px;
+    .card {
+      max-width: 420px;
+      margin: 60px auto;
+      padding: 25px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 25px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
     }
 
-    /* Efsane kart tasarımı (referans görsele benzer) */
-    .profile-card{
-      background:#1a1a1a;
-      border-radius:20px;
-      padding:25px;
-      margin:15px;
-      position:relative;
-      box-shadow:0 0 30px rgba(0,0,0,.6);
-      overflow:hidden;
+    .row {
+      display: flex;
+      gap: 10px;
     }
 
-    .profile-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:20px;
-      padding:2px;
-      background:linear-gradient(135deg,#ff7a18,#ff0000,#6a00ff,#00c6ff);
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-      mask-composite:exclude;
+    input, button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      margin-top: 10px;
+      font-size: 15px;
     }
 
-    .glow{
-      box-shadow:0 0 60px rgba(255,0,80,.5);
+    input { outline: none; }
+
+    button {
+      background: linear-gradient(135deg, #ff7a18, #ff0000);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    input{
-      width:100%;
-      padding:14px;
-      border-radius:30px;
-      border:none;
-      outline:none;
-      font-size:16px;
-      margin-bottom:20px;
+    button:hover { opacity: 0.9; }
+
+    /* Admin */
+    .admin-btn {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      background: linear-gradient(135deg, #00c6ff, #6a00ff);
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    #adminPanel {
+      display: none;
+      max-width: 900px;
+      margin: 40px auto;
     }
 
-    span{opacity:.7}
+    .admin-card {
+      background: #151515;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 15px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
+
+    /* Kar efekti */
+    .snow {
+      position: fixed;
+      top: -10px;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh); }
+    }
   </style>
 </head>
 <body>
 
-<h1>🎄 Profile</h1>
+<h1>❄️ Weihnachts Teilnahme ❄️</h1>
 
-<div class="container">
-  <h2>Mein Profil</h2>
-  <div id="meineKarte"></div>
-
-  <h2>🔍 Profile suchen</h2>
-  <input id="suchfeld" placeholder="Name suchen..." oninput="suche()">
-  <div class="grid" id="liste"></div>
+<div class="card" id="form">
+  <h2>Teilnahmeformular</h2>
+  <div class="row">
+    <input id="vorname" placeholder="Vorname" />
+    <input id="nachname" placeholder="Nachname" />
+  </div>
+  <input id="klasse" placeholder="Klasse" />
+  <input id="freund" placeholder="Bester Freund" />
+  <input id="depresyon" type="number" placeholder="Depression %" />
+  <button onclick="absenden()">Bestätigen</button>
 </div>
+
+<div class="card" id="fertig" style="display:none">
+  <h2>✅ Erfolgreich gesendet</h2>
+  <p>Vielen Dank für deine Teilnahme 🎄</p>
+</div>
+
+<button class="admin-btn" onclick="adminOeffnen()">Admin</button>
+
+<div id="adminPanel"></div>
+
+<script>
+  // Kar yağışı oluştur
+  for (let i = 0; i < 60; i++) {
+    const snow = document.createElement('div');
+    snow.className = 'snow';
+    snow.style.left = Math.random() * 100 + 'vw';
+    snow.style.animationDuration = (5 + Math.random() * 5) + 's';
+    snow.style.opacity = Math.random();
+    document.body.appendChild(snow);
+  }
+</script>
 
 </body>
 </html>
