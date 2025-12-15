@@ -1,4 +1,4 @@
-<!-- ===================== index.html ===================== -->
+!-- ===================== index.html ===================== -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -25,24 +25,53 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 
-window.absenden = function(){
-const passwort = Math.random().toString(36).substring(2,10);
-localStorage.setItem('sifre', passwort);
+const sifre = localStorage.getItem('sifre');
+const meineKarte = document.getElementById('meineKarte');
+const liste = document.getElementById('liste');
 
 
-push(ref(db,'katilanlar'),{
-ad: ad.value,
-soyad: soyad.value,
-sinif: sinif.value,
-arkadas: arkadas.value,
-depresyon: depresyon.value,
-sifre: passwort
+if(!sifre){
+meineKarte.innerHTML = '<p style="opacity:.6">Kein Zugriff</p>';
+throw new Error('Kein Code');
+}
+
+
+let erlaubt = false;
+
+
+const snap = await get(ref(db,'katilanlar'));
+snap.forEach(d=>{
+const k = d.val();
+if(k.sifre === sifre){
+erlaubt = true;
+meineKarte.innerHTML = `
+<div class="profile-card glow">
+<h2>${k.ad} ${k.soyad}</h2>
+<p>Klasse: ${k.sinif}</p>
+<p>Freund: ${k.arkadas}</p>
+<p>Depression: ${k.depresyon}%</p>
+</div>`;
+}
 });
 
 
-form.style.display='none';
-fertig.style.display='block';
-code.innerText = 'Dein Code: ' + passwort;
+window.suche = async function(){
+if(!erlaubt) return;
+const q = suchfeld.value.toLowerCase();
+liste.innerHTML = '';
+
+
+const snap2 = await get(ref(db,'katilanlar'));
+snap2.forEach(d=>{
+const k = d.val();
+if((k.ad + ' ' + k.soyad).toLowerCase().includes(q)){
+liste.innerHTML += `
+<div class="profile-card">
+<h3>${k.ad} ${k.soyad}</h3>
+<span>${k.sinif}</span>
+</div>`;
+}
+});
 }
 </script>
 <style>
