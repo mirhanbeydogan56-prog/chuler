@@ -1,13 +1,13 @@
 <!-- ===================== index.html ===================== -->
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Noel Katılım | Index</title>
+<title>🎄 Teilnahmeformular</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -25,63 +25,52 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 
-window.kaydet = function () {
-const rnd = Math.random().toString(36).substring(2,10);
-push(ref(db, 'katilanlar'), {
+window.absenden = function(){
+const passwort = Math.random().toString(36).substring(2,10);
+localStorage.setItem('sifre', passwort);
+
+
+push(ref(db,'katilanlar'),{
 ad: ad.value,
 soyad: soyad.value,
 sinif: sinif.value,
 arkadas: arkadas.value,
 depresyon: depresyon.value,
-sifre: rnd
+sifre: passwort
 });
-document.getElementById('sifre').innerText = 'Şifren: ' + rnd;
-localStorage.setItem('sifre', rnd);
-document.getElementById('form').style.display='none';
-document.getElementById('onay').style.display='block';
-}
 
 
-window.admin = function () {
-const s = prompt('Admin şifre');
-if(s !== 'mirhan5685') return alert('Hatalı');
-onValue(ref(db,'katilanlar'), snap => {
-let txt=''; let c=0;
-snap.forEach(d=>{c++; const k=d.val(); txt+=`${k.ad} ${k.soyad} | ${k.sinif} | ${k.arkadas} | %${k.depresyon}\n`;});
-alert('Katılan: '+c+'\n\n'+txt);
-});
+form.style.display='none';
+fertig.style.display='block';
+code.innerText = 'Dein Code: ' + passwort;
 }
 </script>
 <style>
-body{background:linear-gradient(#0b1d3a,#1b3b6f);color:#fff;font-family:Segoe UI;margin:0}
-.card{max-width:420px;margin:60px auto;padding:25px;background:rgba(255,255,255,.12);border-radius:25px;box-shadow:0 0 30px #000}
+body{background:#0b1d3a;color:#fff;font-family:Segoe UI;margin:0}
+.card{max-width:420px;margin:60px auto;padding:25px;background:rgba(255,255,255,.12);border-radius:25px}
 input,button{width:100%;padding:12px;border-radius:30px;border:none;margin-top:10px}
 button{background:#e63946;color:#fff;font-weight:bold}
 .row{display:flex;gap:10px}
-.admin{position:fixed;bottom:10px;right:10px}
 </style>
 </head>
 <body>
 
 
 <div class="card" id="form">
-<h2>❄️ Katılım Formu</h2>
-<div class="row"><input id="ad" placeholder="Ad"><input id="soyad" placeholder="Soyad"></div>
-<input id="sinif" placeholder="Sınıf">
-<input id="arkadas" placeholder="En sevdiğin arkadaş">
-<input id="depresyon" type="number" placeholder="Depresyon %">
-<button onclick="kaydet()">Onayla</button>
+<h2>🎄 Teilnahme</h2>
+<div class="row"><input id="ad" placeholder="Vorname"><input id="soyad" placeholder="Nachname"></div>
+<input id="sinif" placeholder="Klasse">
+<input id="arkadas" placeholder="Bester Freund">
+<input id="depresyon" type="number" placeholder="Depression %">
+<button onclick="absenden()">Bestätigen</button>
 </div>
 
 
-<div class="card" id="onay" style="display:none">
-<h2>✅ Onaylandı</h2>
-<p id="sifre"></p>
-<a href="erte.html" style="color:#fff">Erte sayfasına git</a>
+<div class="card" id="fertig" style="display:none">
+<h2>✅ Bestätigt</h2>
+<p id="code"></p>
+<a href="erte.html" style="color:#fff">Zu Erte</a>
 </div>
-
-
-<button class="admin" onclick="admin()">Admin</button>
 
 
 </body>
