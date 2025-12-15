@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Erte | Profil</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
+const firebaseConfig = {
+apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
+authDomain: "ertee-fc073.firebaseapp.com",
+databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
+projectId: "ertee-fc073",
+storageBucket: "ertee-fc073.firebasestorage.app",
+messagingSenderId: "738703331926",
+appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+
+const sifre = localStorage.getItem('sifre') || prompt('Şifre gir');
+
+
+onValue(ref(db,'katilanlar'), snap => {
+let bulundu=false;
+snap.forEach(d=>{
+const k=d.val();
+if(k.sifre===sifre){
+profil.innerHTML=`<h2>${k.ad} ${k.soyad}</h2><p>${k.sinif}</p><p>Arkadaş: ${k.arkadas}</p><p>Depresyon: %${k.depresyon}</p>`;
+bulundu=true;
+}
+});
+if(!bulundu) alert('Şifre hatalı');
+});
+
+
+window.ara=function(){
+const q=arama.value.toLowerCase(); liste.innerHTML='';
+onValue(ref(db,'katilanlar'), s=>{
+s.forEach(d=>{const k=d.val(); if((k.ad+' '+k.soyad).toLowerCase().includes(q)){
+liste.innerHTML+=`<li>${k.ad} ${k.soyad} (${k.sinif})</li>`;}}
+)});
+}
+</script>
+<style>
+body{background:#0b1d3a;color:#fff;font-family:Segoe UI}
+.card{max-width:420px;margin:40px auto;padding:25px;background:rgba(255,255,255,.12);border-radius:25px}
+</style>
+</head>
+<body>
+
+
+<div class="card" id="profil"></div>
+
+
+<div class="card">
+<input id="arama" placeholder="İsim ara" oninput="ara()">
+<ul id="liste"></ul>
+</div>
+
+
+</body>
+</html>
