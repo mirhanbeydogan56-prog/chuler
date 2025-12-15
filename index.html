@@ -1,152 +1,88 @@
+<!-- ===================== index.html ===================== -->
 <!DOCTYPE html>
-<html lang="de">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Winter Teilnahme</title>
+<meta charset="UTF-8">
+<title>Noel Katılım | Index</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
-      authDomain: "ertee-fc073.firebaseapp.com",
-      databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
-      projectId: "ertee-fc073",
-      storageBucket: "ertee-fc073.firebasestorage.app",
-      messagingSenderId: "738703331926",
-      appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7",
-      measurementId: "G-C5L6NY2TDK"
-    };
+const firebaseConfig = {
+apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
+authDomain: "ertee-fc073.firebaseapp.com",
+databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
+projectId: "ertee-fc073",
+storageBucket: "ertee-fc073.firebasestorage.app",
+messagingSenderId: "738703331926",
+appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    window.db = db;
-    window.dbRef = ref;
-    window.dbPush = push;
-    window.dbOn = onValue;
-  </script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(#0b3d91, #001f3f);
-      color: white;
-    }
-    .container {
-      max-width: 420px;
-      margin: 40px auto;
-      background: rgba(255,255,255,0.12);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-    }
-    h1 { text-align: center; font-size: 22px; }
-    .row { display: flex; gap: 10px; }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 14px;
-      border: none;
-      font-size: 16px;
-    }
-    button {
-      background: #c1121f;
-      color: white;
-    }
-    #adminBtn {
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      background: gold;
-      color: black;
-      padding: 10px 14px;
-      border-radius: 14px;
-    }
-    .hidden { display: none; }
-  </style>
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+
+window.kaydet = function () {
+const rnd = Math.random().toString(36).substring(2,10);
+push(ref(db, 'katilanlar'), {
+ad: ad.value,
+soyad: soyad.value,
+sinif: sinif.value,
+arkadas: arkadas.value,
+depresyon: depresyon.value,
+sifre: rnd
+});
+document.getElementById('sifre').innerText = 'Şifren: ' + rnd;
+localStorage.setItem('sifre', rnd);
+document.getElementById('form').style.display='none';
+document.getElementById('onay').style.display='block';
+}
+
+
+window.admin = function () {
+const s = prompt('Admin şifre');
+if(s !== 'mirhan5685') return alert('Hatalı');
+onValue(ref(db,'katilanlar'), snap => {
+let txt=''; let c=0;
+snap.forEach(d=>{c++; const k=d.val(); txt+=`${k.ad} ${k.soyad} | ${k.sinif} | ${k.arkadas} | %${k.depresyon}\n`;});
+alert('Katılan: '+c+'\n\n'+txt);
+});
+}
+</script>
+<style>
+body{background:linear-gradient(#0b1d3a,#1b3b6f);color:#fff;font-family:Segoe UI;margin:0}
+.card{max-width:420px;margin:60px auto;padding:25px;background:rgba(255,255,255,.12);border-radius:25px;box-shadow:0 0 30px #000}
+input,button{width:100%;padding:12px;border-radius:30px;border:none;margin-top:10px}
+button{background:#e63946;color:#fff;font-weight:bold}
+.row{display:flex;gap:10px}
+.admin{position:fixed;bottom:10px;right:10px}
+</style>
 </head>
 <body>
 
-<div class="container" id="step1">
-  <h1>❄️ Willkommen ❄️</h1>
-  <div class="row">
-    <input id="vorname" placeholder="Vorname" />
-    <input id="nachname" placeholder="Nachname" />
-  </div>
-  <button onclick="nextStep(1)">Weiter</button>
+
+<div class="card" id="form">
+<h2>❄️ Katılım Formu</h2>
+<div class="row"><input id="ad" placeholder="Ad"><input id="soyad" placeholder="Soyad"></div>
+<input id="sinif" placeholder="Sınıf">
+<input id="arkadas" placeholder="En sevdiğin arkadaş">
+<input id="depresyon" type="number" placeholder="Depresyon %">
+<button onclick="kaydet()">Onayla</button>
 </div>
 
-<div class="container hidden" id="step2">
-  <h1>Dein bester Freund</h1>
-  <input id="freund" placeholder="Name" />
-  <button onclick="nextStep(2)">Weiter</button>
+
+<div class="card" id="onay" style="display:none">
+<h2>✅ Onaylandı</h2>
+<p id="sifre"></p>
+<a href="erte.html" style="color:#fff">Erte sayfasına git</a>
 </div>
 
-<div class="container hidden" id="step3">
-  <h1>Depressionslevel</h1>
-  <input id="depression" type="number" placeholder="0 - 100" />
-  <button onclick="nextStep(3)">Weiter</button>
-</div>
 
-<div class="container hidden" id="step4">
-  <h1>Kontakt</h1>
-  <input id="telefon" placeholder="+41XXXXXXXXX" />
-  <input id="email" placeholder="E-Mail" />
-  <input id="klasse" placeholder="Klasse" />
-  <button onclick="finish()">Absenden</button>
-</div>
+<button class="admin" onclick="admin()">Admin</button>
 
-<div class="container hidden" id="done">
-  <h1>✅ Bestätigt</h1>
-</div>
 
-<div class="container hidden" id="adminPanel">
-  <h1>Admin Panel</h1>
-  <p id="count"></p>
-  <pre id="list"></pre>
-</div>
-
-<button id="adminBtn" onclick="openAdmin()">Admin</button>
-
-<script>
-  const steps = [step1, step2, step3, step4];
-  let data = {};
-
-  function nextStep(n) {
-    steps[n-1].classList.add('hidden');
-    steps[n].classList.remove('hidden');
-    if (n === 1) { data.vorname = vorname.value; data.nachname = nachname.value; }
-    if (n === 2) data.freund = freund.value;
-    if (n === 3) data.depression = depression.value;
-  }
-
-  function finish() {
-    if (!telefon.value.startsWith('+41')) { alert('+41 erforderlich'); return; }
-    data.telefon = telefon.value;
-    data.email = email.value;
-    data.klasse = klasse.value;
-    window.dbPush(window.dbRef(window.db, 'teilnehmer'), data);
-    step4.classList.add('hidden');
-    done.classList.remove('hidden');
-  }
-
-  function openAdmin() {
-    const pass = prompt('Admin Passwort');
-    if (pass !== 'mirhan5685') return;
-    document.querySelectorAll('.container').forEach(c=>c.classList.add('hidden'));
-    adminPanel.classList.remove('hidden');
-    window.dbOn(window.dbRef(window.db,'teilnehmer'), snap => {
-      const val = snap.val() || {};
-      const arr = Object.values(val);
-      count.innerText = 'Teilnehmer: ' + arr.length;
-      list.innerText = arr.map((k,i)=> `${i+1}) ${k.vorname} ${k.nachname} | Klasse: ${k.klasse} | Freund: ${k.freund} | Depression: ${k.depression} | Tel: ${k.telefon} | Mail: ${k.email}`).join('\n');
-    });
-  }
-</script>
 </body>
 </html>
