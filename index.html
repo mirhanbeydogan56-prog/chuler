@@ -86,9 +86,27 @@
       }
       #xmas-panel h2 { font-size: 20px; text-align: center; }
     }
+  
+
+    /* Mobile top bar */
+    #mobile-header {
+      display: none;
+      background: #fff;
+      padding: 16px;
+      text-align: center;
+      font-weight: 800;
+      color: #007fe7;
+      font-size: 22px;
+    }
+
+    @media (max-width: 1279px) {
+      #mobile-header { display: block; }
+    }
   </style>
 </head>
 <body>
+
+  <div id="mobile-header">{ escola }</div>
 
   <div id="login-left-panel">
     <div id="login-logo-text">{ escola }</div>
